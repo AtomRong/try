@@ -1,8 +1,8 @@
 	
 	template <typename InputIter, typename T, typename Size>
 	InputIter Algorithm::find(InputIter begin, const T &val, Size n) {
-		Size i = Size();
-		for (; i < n; ++i) {
+		Size i;
+		for (; i != n; ++i) {
 			if (*begin == val) return begin;
 			++begin;
 		}
@@ -11,8 +11,8 @@
 
 	template <typename BidirectionalIter, typename T, typename Size>
 	BidirectionalIter Algorithm::rfind(BidirectionalIter end, const T &val, Size n) {
-		Size i = Size();
-		for (; i < n; ++i) {
+		Size i;
+		for (; i != n; ++i) {
 			if (*end == val) return end;
 			--end;
 		}
@@ -21,7 +21,7 @@
 
 	template <typename InputIter, typename Size>
 	InputIter Algorithm::compare(InputIter s1, InputIter s2, Size n) {
-		Size i = Size();
+		Size i;
 		for (; i != n; ++i, ++s1, ++s2) {
 			if (*s1 != *s2) return s1;
 		}
@@ -30,7 +30,7 @@
 
 	template <typename InputIter, typename Size>
 	InputIter Algorithm::find(InputIter haystack, Size haystacklen, InputIter needle, Size needlelen) {
-		Size end_index, i = Size();
+		Size end_index, i; 
 		if (haystacklen == Size() || needlelen == Size()) return InputIter();
 		if (needlelen > haystacklen) return InputIter();
 		end_index = haystacklen - needlelen;
@@ -43,7 +43,7 @@
 
 	template <typename BidirectionalIter, typename InputIter, typename Size>
 	BidirectionalIter Algorithm::rfind(BidirectionalIter haystackend, Size haystacklen, InputIter needle, Size needlelen) {
-		Size end_index, i = Size();
+		Size end_index, i; 
 		if (haystacklen == Size() || needlelen == Size()) return BidirectionalIter();
 		if (needlelen > haystacklen) return BidirectionalIter();
 		end_index = haystacklen - needlelen;
@@ -68,7 +68,7 @@
 
 	template <typename InputIter, typename OutputIter, typename Size>
 	OutputIter Algorithm::copy(OutputIter it, InputIter src, Size n) {
-		Size i = Size();
+		Size i;
 		OutputIter a = it;
 		for (; i != n; ++i, ++a, ++src) *a = *src;
 		return it;
@@ -84,20 +84,20 @@
 
 	template <typename InputIter, typename OutputIter, typename Size>
 	OutputIter Algorithm::move(OutputIter dst, InputIter src, Size n) {
-		Size i = Size();
+		Size i;
 		InputIter begin = src;
 		OutputIter end = dst;
-		for (; i != n; ++i) {
+		for (; i != n; ++i, ++src, ++dst) {
 			if (src == end) src = begin;
-			swap(*src++, *dst++);
+			swap(*src, *dst);
 		}
 	}
 
 	template <typename OutputIter, typename T, typename Size>
 	OutputIter Algorithm::fill(OutputIter dst, const T &val, Size n) {
-		Size i = Size();
+		Size i;
 		OutputIter it = dst;
-		for (; i != n; ++i) *it++ = val;
+		for (; i != n; ++i, ++it) *it = val;
 		return dst;
 	}
 
@@ -112,15 +112,15 @@
 	template <typename InputIter, typename T>
 	size_t Algorithm::count(InputIter it, const T &val) {
 		size_t i = 0; 
-		for (; *it++ != val; ++i);
+		for (; *it != val; ++i, ++it);
 		return i;
 	}
 
 	template <typename InputIter, typename T, typename Size>
 	Size Algorithm::countof(InputIter it, Size n, const T &val) {
-		Size i, j = Size();
-		for (i = Size(); i < n; ++i) {
-			if (*it++ == val) ++j;
+		Size i, j;
+		for (; i < n; ++i, ++it) {
+			if (*it == val) ++j;
 		}
 		return j;
 	}
@@ -141,7 +141,7 @@ Lst Algorithm::List::map(const Lst &lst, Callback func) {
 	Lst tmp;
 	typename Const<typename Lst::Iterator>::type begin, end;
 	begin = lst.begin(); end = lst.end();
-	while (begin != end) tmp.push(func(*begin++));
+	for (; begin != end; ++begin) tmp.push(func(*begin));
 	return tmp;
 }
 
@@ -150,8 +150,8 @@ typename Lst::value_t Algorithm::List::product(const Lst &lst) {
 	typename Const<typename Lst::Iterator>::type begin, end;
 	begin = lst.begin(); end = lst.end();
 	if (begin == end) return typename Lst::value_t();
-	typename Lst::value_t val(*begin++);
-	for (; begin != end; ++begin) val *= *begin;
+	typename Lst::value_t val(*begin);
+	for (++begin; begin != end; ++begin) val *= *begin;
 	return val;
 }
 
