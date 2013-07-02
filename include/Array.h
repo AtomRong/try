@@ -75,8 +75,7 @@ public:
 	void set(const T *p, size_t n)
 		{ this->set<const T*>(p, n); }
 	
-	inline void clear()
-		{ _dend = _base; }
+	void clear();
 	inline size_t count() const
 		{ return _base ? _dend - _base : 0; }
 

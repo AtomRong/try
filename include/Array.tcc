@@ -1,4 +1,13 @@
 template <typename T, typename Alloc>
+void Array<T, Alloc>::clear() {
+	if (_dend == _base) return;
+	for (--_dend; _dend != _base; --_dend) {
+		allocator.destroy(_dend);
+	}
+	allocator.destroy(_dend);
+}
+
+template <typename T, typename Alloc>
 void Array<T, Alloc>::move(Array &a) {
 	Object_Allocator<Array<T, Alloc> >::destroy(&a);
 	a._base = _base;

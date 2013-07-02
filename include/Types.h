@@ -21,6 +21,20 @@
 #ifdef _WIN32
 typedef signed long int ssize_t;
 #endif
+
+template <typename T>
+class Greater {
+public:
+	inline bool operator () (const T &a, const T &b) const
+		{ return a > b; }
+};
+
+template <typename T>
+class Lesser {
+public:
+	inline bool operator () (const T &a, const T &b) const
+		{ return a < b; }
+};
  
 template <typename T>
 struct Unreference { typedef T type; };
